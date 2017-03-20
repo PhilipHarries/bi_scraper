@@ -21,3 +21,8 @@ To run the demo scraper, simply run ./run.sh
  - it would be nice to track broken links / 404 / 500's
  - redirects are followed uncritically, and appear as additional entries to the structure
  - (provision has been made to capture http codes, so the last points should be easy to add)
+
+# assumptions
+ - sites can be crawled by initially starting at index.html or index.php
+ - robots.txt can be ignored
+ - if a sitemap is present, it can be found at sitemap.xml
