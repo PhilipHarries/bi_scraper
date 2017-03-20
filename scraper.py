@@ -50,6 +50,7 @@ def main():
     while paths_still_to_process:
         num_paths = len(paths_to_visit)
         new_paths = set([])
+        print "Processing paths..."
         for path in paths_to_visit:
             if path not in paths_visited:
                 page_url = "{}/{}".format(site, path)
