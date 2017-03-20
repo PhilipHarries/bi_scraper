@@ -80,11 +80,11 @@ def main():
 
     sitemaps_still_to_process = True
     while sitemaps_still_to_process:
-        print "Processing paths..."
+        # print "Processing paths..."
         num_sitemaps = len(sitemaps)
         for sitemap in sitemaps:
             sitemap_url = "{}/{}".format(site, sitemap)
-            print "sitemap: {}".format(sitemap_url)
+            # print "sitemap: {}".format(sitemap_url)
             (xml, http_code) = http_get(sitemap_url)
             (sitemap_paths, url_paths) = process_xml(xml, site_regex)
             new_sitemaps = set([])
@@ -102,11 +102,11 @@ def main():
     while paths_still_to_process:
         num_paths = len(paths_to_visit)
         new_paths = set([])
-        print "Processing paths..."
+        # print "Processing paths..."
         for path in paths_to_visit:
             if path not in paths_visited:
                 page_url = "{}/{}".format(site, path)
-                print "page: {}".format(page_url)
+                # print "page: {}".format(page_url)
                 (page, code) = http_get(page_url)
                 if code == 200:
                     new_page = process_html(page, html_parser)
