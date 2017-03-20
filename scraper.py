@@ -1,6 +1,7 @@
 """ python site scraping tool """
 
 import unicodedata
+import re
 import requests
 from BuildItParser import BuildItParser
 
@@ -36,12 +37,14 @@ def process_html(html_page, this_parser):
 def main():
     """ main function """
     site = "http://wiprodigital.com"
+    site_regex = re.compile(r"{}(.+)$".format(site))
+
     site_structure = []
 
     paths_to_visit = set(["index.html", "index.php"])
     paths_visited = set([])
 
-    html_parser = BuildItParser()
+    html_parser = BuildItParser(site_regex)
 
     paths_still_to_process = True
     while paths_still_to_process:
@@ -50,6 +53,7 @@ def main():
         for path in paths_to_visit:
             if path not in paths_visited:
                 page_url = "{}/{}".format(site, path)
+                print "page: {}".format(page_url)
                 (page, code) = http_get(page_url)
                 if code == 200:
                     new_page = process_html(page, html_parser)
@@ -67,6 +71,12 @@ def main():
     print "SITE: {}".format(site)
     for page in sorted(site_structure, key=lambda p: p["path"]):
         print "PAGE: {}".format(page["path"])
+        for int_link in page["int_links"]:
+            print "   internal link: {}".format(int_link)
+        for ext_link in page["ext_links"]:
+            print "   external link: {}".format(ext_link)
+        for static_link in page["static_links"]:
+            print "   static link: {}".format(static_link)
 
 
 if __name__ == "__main__":

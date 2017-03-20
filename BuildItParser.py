@@ -5,9 +5,10 @@ import HTMLParser
 class BuildItParser(HTMLParser.HTMLParser):
     """ extra link information """
 
-    def __init__(self):
+    def __init__(self, regex):
         """ initialise object """
         HTMLParser.HTMLParser.__init__(self)
+        self.regex = regex
         self.ext_links = set([])
         self.int_links = set([])
         self.static_links = set([])
@@ -18,6 +19,12 @@ class BuildItParser(HTMLParser.HTMLParser):
             for (attrib, value) in attrs:
                 if attrib == "href":
                     # need to check if an internal link
+                    int_path = self.regex.search(value)
+                    if int_path is not None:
+                        int_path = int_path.group(1)
+                        self.int_links.add(int_path)
+                else:
+                    # an external link
                     self.ext_links.add(value)
         elif tag == "img":
             for (attrib, value) in attrs:
