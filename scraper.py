@@ -51,18 +51,22 @@ def main():
             if path not in paths_visited:
                 page_url = "{}/{}".format(site, path)
                 (page, code) = http_get(page_url)
-                new_page = process_html(page, html_parser)
-                new_page["path"] = path
-                site_structure.append(new_page)
-                for internal_link in new_page["int_links"]:
-                    if internal_link not in paths_visited:
-                        new_paths.add(internal_link)
+                if code == 200:
+                    new_page = process_html(page, html_parser)
+                    new_page["path"] = path
+                    site_structure.append(new_page)
+                    for internal_link in new_page["int_links"]:
+                        if internal_link not in paths_visited:
+                            new_paths.add(internal_link)
             paths_visited.add(path)
         paths_to_visit = paths_to_visit.union(new_paths)
         if num_paths == len(paths_to_visit):
             # no new paths added
             paths_still_to_process = False
-    print site_structure
+
+    print "SITE: {}".format(site)
+    for page in sorted(site_structure, key=lambda p: p["path"]):
+        print "PAGE: {}".format(page["path"])
 
 
 if __name__ == "__main__":
