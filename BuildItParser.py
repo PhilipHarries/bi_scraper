@@ -1,5 +1,6 @@
 """ html parser for buildit code test """
 import HTMLParser
+import re
 
 
 class BuildItParser(HTMLParser.HTMLParser):
@@ -23,9 +24,11 @@ class BuildItParser(HTMLParser.HTMLParser):
                     if int_path is not None:
                         int_path = int_path.group(1)
                         self.int_links.add(int_path)
-                else:
-                    # an external link
-                    self.ext_links.add(value)
+                    else:
+                        # an external link
+                        if not (re.match(r"^mailto:", value) or
+                                re.match(r"^#", value)):
+                            self.ext_links.add(value.encode('ascii', 'ignore'))
         elif tag == "img":
             for (attrib, value) in attrs:
                 if attrib == "src":
