@@ -2,6 +2,7 @@
 
 import unicodedata
 import requests
+from BuildItParser import BuildItParser
 
 
 def http_get(url):
@@ -22,12 +23,13 @@ def http_get(url):
             return ("", 500)
 
 
-def process_html(html_page):
+def process_html(html_page, this_parser):
     """ extract links from an html page """
+    this_parser.feed(html_page)
     return {
-        "int_links": [],
-        "ext_links": [],
-        "static_links": []
+        "int_links": this_parser.int_links,
+        "ext_links": this_parser.ext_links,
+        "static_links": this_parser.ext_links
         }
 
 
@@ -39,6 +41,8 @@ def main():
     paths_to_visit = set(["index.html", "index.php"])
     paths_visited = set([])
 
+    html_parser = BuildItParser()
+
     paths_still_to_process = True
     while paths_still_to_process:
         num_paths = len(paths_to_visit)
@@ -47,7 +51,7 @@ def main():
             if path not in paths_visited:
                 page_url = "{}/{}".format(site, path)
                 (page, code) = http_get(page_url)
-                new_page = process_html(page)
+                new_page = process_html(page, html_parser)
                 new_page["path"] = path
                 site_structure.append(new_page)
                 for internal_link in new_page["int_links"]:
@@ -58,6 +62,7 @@ def main():
         if num_paths == len(paths_to_visit):
             # no new paths added
             paths_still_to_process = False
+    print site_structure
 
 
 if __name__ == "__main__":
