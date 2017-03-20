@@ -23,15 +23,19 @@ def http_get(url):
 
 
 def main():
+    """ main function """
     site = "http://wiprodigital.com"
 
     paths_to_visit = set(["index.html", "index.php"])
+    paths_visited = set([])
 
     for path in paths_to_visit:
-        page_url = "{}/{}".format(site, path)
-        print "retrieving {}".format(page_url)
-        (page, code) = http_get(page_url)
-        print page
+        if path not in paths_visited:
+            page_url = "{}/{}".format(site, path)
+            print "retrieving {}".format(page_url)
+            (page, code) = http_get(page_url)
+            print page  # process page for new paths
+        paths_visited.add(path)
 
 
 if __name__ == "__main__":
