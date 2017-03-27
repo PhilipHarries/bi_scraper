@@ -10,9 +10,9 @@ class BuildItParser(HTMLParser.HTMLParser):
         """ initialise object """
         HTMLParser.HTMLParser.__init__(self)
         self.regex = regex
-        self.ext_links = set([])
-        self.int_links = set([])
-        self.static_links = set([])
+        self.ext_links = set()
+        self.int_links = set()
+        self.static_links = set()
 
     def handle_starttag(self, tag, attrs):
         """ handle start tags for links and images """

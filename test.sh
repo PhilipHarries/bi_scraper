@@ -3,4 +3,5 @@
 virtualenv /tmp/venv
 . /tmp/venv/bin/activate
 pip install -r requirements.txt
-python ./scraper.py
+pip install pytest
+pytest

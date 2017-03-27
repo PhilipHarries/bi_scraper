@@ -32,7 +32,7 @@ def process_html(html_page, this_parser):
     return {
         "int_links": this_parser.int_links,
         "ext_links": this_parser.ext_links,
-        "static_links": this_parser.ext_links
+        "static_links": this_parser.static_links
         }
 
 
